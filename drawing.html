@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+
+
+  
+  <title>Drawing tool</title>
+    <link rel="canonical" href="https://codepen.io/powit/pen/BPmQYz" />
+  
+  
+  
+  
+<style>
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
+
+/* Reset defaults */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+html {
+  font-family: "Roboto";
+}
+
+header {
+  width: 85%;
+  margin: auto;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 25% 25% 25%;
+  justify-content: center;	
+  margin-top: 30px;
+}
+
+h1 {
+  color: rgba(0, 0, 0, 0.7.5);
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+header p {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.colorPickerWrapper, .strokeWidthPickerWrapper {
+  text-align: center;
+}
+
+.colorPickerWrapper input {
+  width: 75px;
+}
+
+.container {
+  width: 100%;
+  margin: auto;
+  height: 500px;
+}
+
+canvas {
+  background-color: #F8F8F8;
+}
+
+.color, .stroke, .clear {
+  justify-self: center;
+}
+
+#clearBtn {
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 10px 50px;
+  background-color: #55D0ED;
+  border-radius: 10px;
+  text-decoration: none;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate="no">
+  <header>
+  <h1>Draw with your mouse</h1>
+  <div class="grid">
+    <div class="color">
+      <p>Pick a color:</p>
+      <div class="colorPickerWrapper">
+        <input type="color" id="colorPicker" value="#55D0ED">
+      </div>
+    </div>
+    <div class="stroke">
+      <p>Change the stroke's width:</p>
+      <div class="strokeWidthPickerWrapper">
+        <input type="range" min="1" max="20" value="2.5" id="strokeWidthPicker">
+      </div>
+    </div>
+    <div class="clear">
+      <p>Clear the canvas:</p>
+      <div class="clearBtnWrapper">
+        <a href="#" id="clearBtn">Clear canvas</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <canvas id="canvas" resize></canvas>
+</div>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+  <script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://s.cdpn.io/6859/paper.js'></script>
+<script src='https://s.cdpn.io/6859/tween.min.js'></script>
+      <script id="rendered-js" >
+// Check out PaperJs' Docs: http://paperjs.org/tutorials/
+
+paper.install(window);
+
+window.onload = function () {
+  // Set it up
+  paper.setup('canvas');
+
+  var canvas = document.getElementById("canvas");
+
+  const context = canvas.getContext('2d');
+
+  // Create a simple drawing tool:
+  var tool = new Tool();
+  var path;
+
+  // Get elements from DOM and define properties
+  var colorPicker = document.getElementById("colorPicker");
+  var colorStroke;
+  var widthStrokePicker = document.getElementById("strokeWidthPicker");
+  var widthStroke;
+  var clearButton = document.getElementById("clearBtn");
+
+  // Clear event listener
+  clearBtn.addEventListener("click", function () {
+    // Clear canvas
+    paper.project.activeLayer.removeChildren();
+    paper.view.draw();
+  });
+
+  // Update 
+  function update() {
+    colorStroke = colorPicker.value;
+    widthStroke = widthStrokePicker.value;
+  }
+
+  // Check for new color value each second
+  setInterval(update, 1000);
+
+  // Define a mousedown and mousedrag handler
+  tool.onMouseDown = function (event) {
+    path = new Path();
+    path.strokeWidth = widthStroke;
+    path.strokeColor = colorStroke;
+    // Draw
+    path.add(event.point);
+  };
+
+  tool.onMouseDrag = function (event) {
+    // Draw
+    path.add(event.point);
+  };
+};
+//# sourceURL=pen.js
+    </script>
+
+  
+</body>
+
+</html>

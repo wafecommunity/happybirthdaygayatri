@@ -1,0 +1,649 @@
+
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+
+
+  
+  <title>NCC Shooting practice</title>
+    <link rel="canonical" href="https://codepen.io/FRADAR/pen/abpgoEx" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+  
+  
+  
+<style>
+* {
+  user-select: none;
+}
+
+body {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
+  background-image: url('https://www.transparenttextures.com/patterns/graphy-dark.png');
+  background-color: #666;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  margin: 1em;
+  cursor: pointer;
+}
+
+h1 {
+  color: RGB(239, 239, 239);
+  margin: 1rem;
+  opacity: 0.5;
+  font-size: 1.5rem;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.hidden {
+  display: none;
+}
+
+.canvas-container {
+  position: relative;
+}
+
+canvas {
+  box-sizing: content-box;
+  background-color: #000;
+  border-radius: 0.5rem;
+  border: 5px solid #444;
+  -webkit-box-shadow: inset 5px 5px 10px -5px #000000bc, inset -5px -5px 10px -5px #000000bc;
+  box-shadow: inset 5px 5px 10px -5px #000000bc, inset -5px -5px 10px -5px #000000bc;
+}
+
+.score-div {
+  user-select: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 0.5rem 1rem;
+}
+
+#modal {
+  position: absolute;
+  background-color: RGB(239, 239, 239);
+  background-image: url('https://www.transparenttextures.com/patterns/graphy-dark.png');
+  border: 3px solid RGB(239, 239, 239);
+  border-radius: 0.5rem;
+  width: 300px;
+  /* height: 200px; */
+  margin: auto;
+  color: black;
+  z-index: 10;
+}
+
+#modal h1 {
+  color: #000;
+  opacity: 1;
+  font-size: 2.5rem;
+}
+
+#modal-score {
+  font-size: 3rem;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate="no">
+  <body class="flex-center column">
+    <div id="modal" class="hidden">
+      <div class="flex-center column">
+        <h1>Game Over</h1>
+        <h2>Your score: <span id="modal-score">0</span></h2>
+        <div class="flex-center">
+          <button id="restart">Restart</button><button id="quit">Quit</button>
+        </div>
+      </div>
+    </div>
+    <div class="flex-center">
+      <button id="play">Play</button><button id="pause">Pause</button
+      ><button id="resume">Resume</button><button id="reset">Reset</button>
+    </div>
+    <div class="canvas-container">
+      <div class="score-div">
+        <h1>Score: <span id="score">0</span></h1>
+      </div>
+      <canvas id="canvas-tuto">
+        <h1>Canvas have not been displayed</h1>
+      </canvas>
+    </div>
+  </body>
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+  
+      <script id="rendered-js" >
+// Config
+
+const minSize = 15;
+const maxSize = 40;
+let maxSpeed = 2;
+const particuleSize = 5;
+const particuleSpeed = 15;
+const particuleFriction = 0.985;
+let enemySpawnFrequencyInit = 2000;
+let enemySpawIncreaseEveryXSeconds = 5;
+let enemySpawnIncreaseFactor = 1.5;
+let shootingSpeed = 50; // lower is quicker. Under 20 = bug
+let enemySpawnFrequency = enemySpawnFrequencyInit;
+
+// Stuff
+
+const canvas = document.getElementById('canvas-tuto');
+const playButton = document.getElementById('play');
+const restartButton = document.getElementById('restart');
+const quitButton = document.getElementById('quit');
+const pauseButton = document.getElementById('pause');
+const resetButton = document.getElementById('reset');
+const resumeButton = document.getElementById('resume');
+const modal = document.getElementById('modal');
+const c = canvas.getContext('2d');
+
+// canvas.width = 800;
+// canvas.height = canvas.width / 1.5;
+
+canvas.width = window.innerWidth - 100 < 400 ? 320 : window.innerWidth - 100;
+canvas.height = window.innerHeight - 200 < 400 ? 320 : window.innerHeight - 200;
+
+let projectiles = [];
+let enemies = [];
+let particules = [];
+let player;
+let score = 0;
+let endGameFlag = false;
+let playerIsDead = false;
+let enemySpawnCounter = 0;
+let playTime = 0;
+
+// Classes
+
+class Player {
+  constructor(x, y, radius, color) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.radius = radius;
+  }
+  draw() {
+    c.beginPath();
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+    c.fillStyle = this.color;
+    c.fill();
+  }}
+
+
+class Projectile extends Player {
+  constructor(x, y, radius, color, velocity, velocityFactor = 1, killed) {
+    super(x, y, radius, color, killed);
+    this.velocity = velocity;
+    this.velocityFactor = velocityFactor;
+    this.killed = false;
+  }
+  update() {
+    this.draw();
+    this.x = this.x + this.velocity.x * this.velocityFactor;
+    this.y = this.y + this.velocity.y * this.velocityFactor;
+  }}
+
+
+class Enemy extends Projectile {
+  constructor(x, y, radius, color, velocity, velocityFactor, killed) {
+    super(x, y, radius, color, velocity, velocityFactor, killed);
+  }}
+
+
+class Particule extends Enemy {
+  constructor(x, y, radius, color, velocity, velocityFactor, killed, friction) {
+    super(x, y, radius, color, velocity, velocityFactor, killed);
+    this.alpha = 1;
+    this.friction = friction;
+  }
+
+  draw() {
+    c.save();
+    c.globalAlpha = this.alpha;
+    c.beginPath();
+    c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+    c.fillStyle = this.color;
+    c.fill();
+    c.restore();
+  }
+
+  update() {
+    this.draw();
+    this.velocity.x *= this.friction;
+    this.velocity.y *= this.friction;
+    this.x = this.x + this.velocity.x * this.velocityFactor;
+    this.y = this.y + this.velocity.y * this.velocityFactor;
+    this.alpha -= 0.01;
+  }}
+
+
+// Engine & Animation
+
+let animationId;
+function animate() {
+  animationId = requestAnimationFrame(animate);
+  if (!endGameFlag && playerIsDead) {
+    endGameFlag = true;
+    setTimeout(() => {
+      endGame();
+    }, 200);
+  }
+  c.fillStyle = 'rgba(0,0,0, 0.2)';
+  c.fillRect(0, 0, canvas.width, canvas.height);
+  projectiles.forEach(projectile => projectile.update());
+  player.draw();
+  enemies.forEach((enemy, enemyIndex) => {
+    enemy.update();
+    projectiles.forEach((projectile, projectileIndex) => {
+      const distX = Math.floor(projectile.x - enemy.x);
+      const distY = Math.floor(projectile.y - enemy.y);
+      const dist = Math.floor(Math.hypot(distX, distY));
+      if (
+      dist - enemy.radius - projectile.radius < 0 &&
+      enemy.killed === false &&
+      projectile.killed === false)
+      {
+        projectile.killed = true;
+        gsap.set(projectile, { radius: 10, velocityFactor: 0.2, duration: 0.1, ease: 'bounce' });
+        gsap.to(projectile, {
+          radius: 0,
+          velocityFactor: 0,
+          duration: 0.05,
+          ease: 'bounce',
+          onComplete: () => projectiles.splice(projectileIndex, 1) });
+
+        generateParticuleFromObject(
+        enemy,
+        enemy.radius,
+        particuleSpeed * Math.random(),
+        particuleSize,
+        particuleFriction);
+
+        generateParticuleFromObject(
+        projectile,
+        projectile.radius,
+        particuleSpeed * 2 * Math.random(),
+        2,
+        particuleFriction);
+
+        if (enemy.radius >= minSize) {
+          reduceObjectSize(enemy, 0.5);
+        } else {
+          enemy.killed = true;
+          addScore(10);
+          gsap.to(enemy, {
+            radius: 0,
+            duration: 0.05,
+            ease: 'bounce',
+            onComplete: () => enemies.splice(enemyIndex, 1) });
+
+        }
+      }
+      if (!checkIfInCanvas(projectile)) {
+        projectiles.splice(projectileIndex, 1);
+      }
+    });
+    const distX = Math.floor(player.x - enemy.x);
+    const distY = Math.floor(player.y - enemy.y);
+    const dist = Math.floor(Math.hypot(distX, distY));
+    if (dist - enemy.radius - player.radius < 0 && endGameFlag === false) {
+      generateParticuleFromObject(
+      player,
+      player.radius * 15,
+      particuleSpeed * 5,
+      10,
+      particuleFriction - 0.2);
+
+      playerIsDead = true;
+    }
+  });
+  particules.forEach((particule, indexParticule) => {
+    particule.alpha <= 0 ? particules.splice(indexParticule, 1) : particule.update();
+  });
+}
+
+let enemyInterval;
+function enemySpawn(SpawnFrequency) {
+  enemyInterval = setInterval(() => {
+    const radius = Math.floor(Math.random() * (maxSize - minSize) + minSize);
+    const { x, y } = getRandomBoundaryCoord(radius);
+    const distX = player.x - x;
+    const distY = player.y - y;
+    const velocityFactor = Math.floor(Math.random() * (maxSpeed - 1)) + 1;
+    const { velocityX, velocityY } = calcVelocityXY(distX, distY);
+    const enemy = new Enemy(
+    x,
+    y,
+    radius,
+    randomHexColor(),
+    {
+      x: velocityX,
+      y: velocityY },
+
+    velocityFactor);
+
+    enemies.push(enemy);
+  }, SpawnFrequency);
+}
+
+let secondsInterval;
+function countingSeconds() {
+  secondsInterval = setInterval(() => {
+    playTime++;
+    playTime % enemySpawIncreaseEveryXSeconds === 0 ?
+    increaseEnenmySpawnSpeed(enemySpawnIncreaseFactor) :
+    null;
+  }, 1000);
+}
+
+let shootX;
+let shootY;
+let shootInterval;
+let clicked = false;
+
+function shootAtCoordXY(e) {
+  clicked = true;
+  if (e.touches) {
+    const rect = e.target.getBoundingClientRect();
+    shootX = e.touches[0].clientX - rect.left;
+    shootY = e.touches[0].clientY - rect.top;
+  } else {
+    shootX = e.layerX;
+    shootY = e.layerY;
+  }
+  shootInterval = setInterval(() => shootProjectiles(), shootingSpeed);
+}
+
+function stopShooting() {
+  clearInterval(shootInterval);
+  clicked = false;
+}
+
+function updateShootingCoordXY(e) {
+  if (clicked) {
+    if (e.touches) {
+      const rect = e.target.getBoundingClientRect();
+      shootX = e.touches[0].clientX - rect.left;
+      shootY = e.touches[0].clientY - rect.top;
+    } else {
+      shootX = e.layerX;
+      shootY = e.layerY;
+    }
+  }
+}
+
+// Event listeners
+
+playButton.addEventListener('click', startNewGame);
+resetButton.addEventListener('click', resetGame);
+pauseButton.addEventListener('click', pauseGame);
+resumeButton.addEventListener('click', resumeGame);
+restartButton.addEventListener('click', () => {
+  hideModal();
+  resetGame();
+  startNewGame();
+});
+quitButton.addEventListener('click', () => {
+  hideModal();
+  resetGame();
+});
+
+function setShootingListeners() {
+  window.addEventListener('mousedown', shootAtCoordXY);
+  window.addEventListener('touchstart', shootAtCoordXY);
+  window.addEventListener('mouseup', stopShooting);
+  window.addEventListener('touchend', stopShooting);
+  window.addEventListener('mousemove', updateShootingCoordXY);
+  window.addEventListener('touchmove', updateShootingCoordXY);
+}
+
+function removeShootingListeners() {
+  window.removeEventListener('mousedown', shootAtCoordXY);
+  window.removeEventListener('mouseup', stopShooting);
+  window.removeEventListener('mousemove', updateShootingCoordXY);
+  window.removeEventListener('touchstart', shootAtCoordXY);
+  window.removeEventListener('touchend', stopShooting);
+  window.removeEventListener('touchmove', updateShootingCoordXY);
+}
+
+// Tools
+
+function generateParticuleFromObject(
+object,
+numberOfParticules,
+speedOfParticules,
+radiusOfParticule,
+friction)
+{
+  for (let i = 0; i < numberOfParticules; i++) {
+    particules.push(
+    new Particule(
+    object.x,
+    object.y,
+    radiusOfParticule * Math.random(),
+    object.color,
+    { x: Math.random() - 0.5, y: Math.random() - 0.5 },
+    speedOfParticules * Math.random(),
+    false,
+    friction));
+
+
+  }
+}
+
+function shootProjectiles() {
+  const distX = shootX - player.x;
+  const distY = shootY - player.y;
+  const { velocityX, velocityY } = calcVelocityXY(distX, distY);
+  const velocityFactor = 4;
+  projectiles.push(
+  new Projectile(
+  player.x,
+  player.y,
+  5,
+  'white',
+  {
+    x: velocityX,
+    y: velocityY },
+
+  velocityFactor));
+
+
+}
+
+function cleanCanvas() {
+  c.fillStyle = 'rgba(0,0,0)';
+  c.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function randomHexColor() {
+  return '#' + Math.random().toString(16).substr(-6);
+}
+
+function calcVelocityXY(distX, distY) {
+  const angle = Math.atan2(distY, distX);
+  const velocityY = Math.sin(angle);
+  const velocityX = Math.cos(angle);
+  return {
+    velocityX,
+    velocityY };
+
+}
+
+function getRandomBoundaryCoord(radius = 0) {
+  const randomInt = Math.floor(Math.random() * 4);
+  let x;
+  let y;
+  switch (randomInt) {
+    case 0:
+      x = -radius;
+      y = Math.floor(Math.random() * canvas.height) + radius;
+      break;
+    case 1:
+      x = canvas.width + radius;
+      y = Math.floor(Math.random() * canvas.height) + radius;
+      break;
+    case 2:
+      y = -radius;
+      x = Math.floor(Math.random() * canvas.width) + radius;
+      break;
+    case 3:
+      y = canvas.height + radius;
+      x = Math.floor(Math.random() * canvas.width) + radius;
+      break;
+    default:
+      y = -radius;
+      x = -radius;
+      break;}
+
+  return { x, y };
+}
+
+function checkIfInCanvas(item) {
+  if (
+  item.x + item.radius < 0 ||
+  item.x - item.radius > canvas.width ||
+  item.y + item.radius < 0 ||
+  item.y - item.radius > canvas.height)
+  {
+    return false;
+  }
+  return true;
+}
+
+function reduceObjectSize(object, reduceFactor) {
+  gsap.to(object, { radius: object.radius * reduceFactor, ease: 'bounce', duration: 0.2 });
+  object.velocityFactor > 1 ? object.velocityFactor-- : object.velocityFactor = 0.5;
+}
+
+function addScore(addedPoints) {
+  score += addedPoints;
+  document.getElementById('score').innerHTML = score;
+}
+
+function restoreInitialValues() {
+  projectiles = [];
+  enemies = [];
+  particules = [];
+  score = 0;
+  addScore(0);
+  enemySpawnFrequency = enemySpawnFrequencyInit;
+  enemySpawnCounter = 0;
+  playTime = 0;
+  endGameFlag = false;
+  playerIsDead = false;
+  playButton.disabled = false;
+  pauseButton.disabled = true;
+  resetButton.disabled = false;
+  resumeButton.disabled = true;
+  console.log('initial values restored');
+  clearInterval(secondsInterval);
+  clearInterval(shootInterval);
+  removeShootingListeners();
+  clicked = false;
+}
+
+function displayModal() {
+  modal.classList.remove('hidden');
+  document.getElementById('modal-score').innerHTML = score;
+}
+
+function hideModal() {
+  modal.classList.add('hidden');
+}
+
+function increaseEnenmySpawnSpeed(factor) {
+  console.log('increaseSpawnSpeed');
+  clearInterval(enemyInterval);
+  enemySpawnFrequency = Math.floor(enemySpawnFrequency / factor);
+  enemySpawnCounter = 0;
+  enemySpawn(enemySpawnFrequency);
+}
+
+// Init & Lauch
+
+function startNewGame() {
+  setShootingListeners();
+  playButton.disabled = true;
+  pauseButton.disabled = false;
+  player = new Player(canvas.width / 2, canvas.height / 2, 12, 'red');
+  animate();
+  countingSeconds();
+  enemySpawn(enemySpawnFrequency);
+  console.log('new game started');
+}
+
+function resumeGame() {
+  setShootingListeners();
+  animate();
+  enemySpawn(enemySpawnFrequency);
+  countingSeconds();
+  pauseButton.disabled = false;
+  resumeButton.disabled = true;
+  console.log('game resumed');
+}
+
+function pauseGame() {
+  removeShootingListeners();
+  cancelAnimationFrame(animationId);
+  clearInterval(enemyInterval);
+  clearInterval(secondsInterval);
+  pauseButton.disabled = true;
+  resumeButton.disabled = false;
+  console.log('game paused');
+}
+
+function endGame() {
+  pauseGame();
+  displayModal();
+  resumeButton.disabled = true;
+  console.log('end of the game');
+}
+
+function resetGame() {
+  playButton.disabled = false;
+  cleanCanvas();
+  pauseGame();
+  restoreInitialValues();
+  console.log('game reseted');
+}
+
+restoreInitialValues();
+//# sourceURL=pen.js
+    </script>
+
+  
+</body>
+
+</html>

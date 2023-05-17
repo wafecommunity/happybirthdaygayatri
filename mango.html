@@ -1,0 +1,603 @@
+
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+
+
+  
+  <title>Fruits</title>
+    <link rel="canonical" href="https://codepen.io/cmlohr/pen/mdRxzWw" />
+  
+  
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css'>
+  
+<style>
+/* imports */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
+/* reset */
+*,
+*:before,
+*:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+:focus {
+  outline: 0;
+}
+
+body {
+  line-height: 1;
+  color: black;
+  background: white;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+caption,
+th,
+td {
+  text-align: left;
+  font-weight: normal;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+}
+
+blockquote,
+q {
+  quotes: "" "";
+}
+
+/* Variables */
+/* mixin */
+/* main */
+html,
+body {
+  overflow: hidden;
+}
+
+body {
+  background-color: #a0d9f8;
+}
+
+.bg {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  overflow: hidden;
+  height: 500px;
+  width: 500px;
+  position: fixed;
+  transform: translateY(0px);
+  transition: all 2s cubic-bezier(0.22, 0.44, 0, 1.15);
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border-radius: 50%;
+  border: 0.55em solid #fff;
+  transform-style: preserve-3d;
+}
+.bg:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.bg:first-child {
+  background-image: url(https://source.unsplash.com/h5yMpgOI5nI/500x500);
+}
+.bg:nth-child(2) {
+  background-image: url(https://source.unsplash.com/TIGDsyy0TK4/500x500);
+}
+.bg:nth-child(3) {
+  background-image: url(https://source.unsplash.com/TdDtTu2rv4s/500x500);
+}
+.bg:nth-child(4) {
+  background-image: url(https://source.unsplash.com/eudGUrDdBB0/500x500);
+}
+.bg:nth-child(5) {
+  background-image: url(https://source.unsplash.com/eJH4f1rlG7g/500x500);
+}
+.bg:nth-child(6) {
+  background-image: url(https://source.unsplash.com/24RUrLSW1HI/500x500);
+}
+.bg:nth-child(7) {
+  background-image: url(https://source.unsplash.com/ezSFnAFi9hY/500x500);
+}
+.bg:nth-child(8) {
+  background-image: url(https://source.unsplash.com/2TYrR2IB72s/500x500);
+}
+.bg:nth-child(9) {
+  background-image: url(https://source.unsplash.com/1cWZgnBhZRs/500x500);
+}
+.bg:nth-child(10) {
+  background-image: url(https://source.unsplash.com/9aOswReDKPo/500x500);
+}
+.bg:nth-child(11) {
+  background-image: url(https://source.unsplash.com/Nl7eLS8E2Ss/500x500);
+}
+.bg:nth-child(12) {
+  background-image: url(https://source.unsplash.com/3HhXWJzG5Ko/500x500);
+}
+.bg:nth-child(13) {
+  background-image: url(https://source.unsplash.com/fczCr7MdE7U/500x500);
+}
+.bg:nth-child(14) {
+  background-image: url(https://source.unsplash.com/uI900SItAyY/500x500);
+}
+.bg:nth-child(15) {
+  background-image: url(https://source.unsplash.com/0AynZdszfz0/500x500);
+}
+.bg:nth-child(16) {
+  background-image: url(https://source.unsplash.com/C6JhUKs9q8M/500x500);
+}
+
+/* stacking */
+.bg:nth-child(1) {
+  z-index: 16;
+}
+
+.bg:nth-child(2) {
+  z-index: 15;
+}
+
+.bg:nth-child(3) {
+  z-index: 14;
+}
+
+.bg:nth-child(4) {
+  z-index: 13;
+}
+
+.bg:nth-child(5) {
+  z-index: 12;
+}
+
+.bg:nth-child(6) {
+  z-index: 11;
+}
+
+.bg:nth-child(7) {
+  z-index: 10;
+}
+
+.bg:nth-child(8) {
+  z-index: 9;
+}
+
+.bg:nth-child(9) {
+  z-index: 8;
+}
+
+.bg:nth-child(10) {
+  z-index: 7;
+}
+
+.bg:nth-child(11) {
+  z-index: 6;
+}
+
+.bg:nth-child(12) {
+  z-index: 5;
+}
+
+.bg:nth-child(13) {
+  z-index: 4;
+}
+
+.bg:nth-child(14) {
+  z-index: 3;
+}
+
+.bg:nth-child(15) {
+  z-index: 2;
+}
+
+.bg:nth-child(16) {
+  z-index: 1;
+}
+
+.content-wrapper {
+  height: 400px;
+  width: 400px;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  will-change: transform;
+  backface-visibility: hidden;
+  transition: all 1.5s cubic-bezier(0.4, 0.6, 0, 1.2);
+  width: 400px;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  transform: translateY(175px);
+}
+.content-title {
+  font-size: 3.8em;
+}
+
+.bg.up-scroll {
+  transform: translate3d(0, 100vh/2, 0);
+}
+.bg.up-scroll + .bg {
+  scale: 0.5;
+  opacity: 0;
+}
+.bg.up-scroll + .bg .content-wrapper {
+  transform: translateY(300px);
+}
+
+.bg.down-scroll {
+  transform: translate3d(50px, -100vh, 0) rotateZ(260deg);
+}
+.bg.down-scroll .content-wrapper {
+  transform: translateY(-300px);
+}
+.bg.down-scroll + .bg:not(.down-scroll) {
+  transform: translate3d(0, -50px/2, 0);
+}
+.bg.down-scroll + .bg:not(.down-scroll) .content-wrapper {
+  transform: translateY(-300px/2);
+}
+
+.last-wrap {
+  transform: translateY(150px);
+}
+
+/*  sm btn overlay styles  */
+.twitter-btn {
+  position: fixed;
+  margin: auto;
+  bottom: 0;
+  background-color: #1da1f2;
+  border: 0.15em solid #1da1f2;
+  border-left: none;
+  border-bottom: none;
+  border-radius: 0% 100% 0% 0%/0% 100% 0% 93%;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+}
+
+.in-btn {
+  position: fixed;
+  margin: auto;
+  bottom: 0;
+  right: 0;
+  border: 0.15em solid #0072b1;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 100% 0% 0% 0%/100% 0% 0% 0%;
+  background-color: #0072b1;
+  height: 50px;
+  width: 50px;
+  cursor: pointer;
+}
+
+.fa-twitter {
+  position: absolute;
+  left: 0em;
+  right: 0.4em;
+  top: 0.5em;
+  bottom: 0;
+  color: #fff;
+  font-size: 1.8em;
+}
+
+.fa-linkedin-in {
+  position: absolute;
+  left: 0.4em;
+  right: 0em;
+  top: 0.55em;
+  bottom: 0;
+  color: #fff;
+  font-size: 1.8em;
+}
+
+.in-btn:hover {
+  background-color: #000;
+}
+
+.twitter-btn:hover {
+  background-color: #000;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate="no">
+  <div class="container">
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Fruit Facts!</p>
+      <p class="content-subtitle">Scroll!</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Mango</p>
+      <p class="content-subtitle">Mangos were first grown in India over 5,000 years ago.</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Blueberry</p>
+      <p class="content-subtitle">Blueberries were called “star fruits” by North American indigenous peoples because of the five-pointed star shape that is formed at the blossom end of the berry.</p>
+    </div>
+  </section>
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Pineapple</p>
+      <p class="content-subtitle">Pineapples contain the bromelain enzyme which can break down proteins, so you can use them to tenderize meat.</p>
+    </div>
+  </section>
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Raspberry</p>
+      <p class="content-subtitle">The people of Troy, in modern-day Turkey, were the first to note an appreciation of the raspberry fruit.</p>
+    </div>
+  </section>
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Strawberry</p>
+      <p class="content-subtitle">Technically berries have seeds on the inside and they don’t come from a single ovary, so strawberries are really in a group all their own.</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Orange</p>
+      <p class="content-subtitle">Oranges originated around 4000 BC in Southeast Asia, and then spread into India.</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Watermelon</p>
+      <p class="content-subtitle">Fun fact: Watermelons are both fruit and vegitable.</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Moar Fruit Facts!</p>
+      <p class="content-subtitle">Most commercial fruits<br>are clones.</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Avocado</p>
+      <p class="content-subtitle">Avocados are in the same family as cinnamon.</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Lime</p>
+      <p class="content-subtitle">In the 1800s, limes, along with lemons, were used to avoid scurvy by sailors from Britain.</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Cherry</p>
+      <p class="content-subtitle">Did you know a cherry tree can be harvested in seven seconds?</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Banana</p>
+      <p class="content-subtitle">The scientific name for banana is musa sapientum, which means “fruit of the wise men.”</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Pear</p>
+      <p class="content-subtitle">Pears are a part of the rose family.</p>
+    </div>
+  </section>
+
+  <section class="bg">
+    <div class="content-wrapper">
+      <p class="content-title">Peach</p>
+      <p class="content-subtitle">Every year, the United States grows 1.9 billion pounds of peaches.</p>
+    </div>
+  </section>
+
+  
+
+</div>
+</div>
+
+</svg>
+
+<!-- sm btns -->
+
+    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js'></script>
+      <script id="rendered-js" >
+var ticking = false;
+var isFirefox = /Firefox/i.test(navigator.userAgent);
+var isIe =
+/MSIE/i.test(navigator.userAgent) ||
+/Trident.*rv\:11\./i.test(navigator.userAgent);
+var scrollSensitivity = 30;
+var slideTime = 600;
+var currentSlide = 0;
+var totalNumSlide = $(".bg").length;
+
+function scroll(evt) {
+  if (isFirefox) {
+    delta = evt.detail * -120;
+  } else if (isIe) {
+    delta = -evt.deltaY;
+  } else {
+    delta = evt.wheelDelta;
+  }
+
+  if (ticking != true) {
+    if (delta <= -scrollSensitivity) {
+      ticking = true;
+      if (currentSlide !== totalNumSlide - 1) {
+        currentSlide++;
+        nextItem();
+      }
+      slideDurationTimeout(slideTime);
+    }
+    if (delta >= scrollSensitivity) {
+      ticking = true;
+      if (currentSlide !== 0) {
+        currentSlide--;
+      }
+      previousItem();
+      slideDurationTimeout(slideTime);
+    }
+  }
+}
+
+function slideDurationTimeout(slideDuration) {
+  setTimeout(function () {
+    ticking = false;
+  }, slideDuration);
+}
+
+var mousewheelEvent = isFirefox ? "DOMMouseScroll" : "wheel";
+window.addEventListener(mousewheelEvent, _.throttle(scroll, 5), false);
+
+function nextItem() {
+  var $previousSlide = $(".bg").eq(currentSlide - 1);
+  $previousSlide.removeClass("up-scroll").addClass("down-scroll");
+}
+
+function previousItem() {
+  var $currentSlide = $(".bg").eq(currentSlide);
+  $currentSlide.removeClass("down-scroll").addClass("up-scroll");
+}
+//# sourceURL=pen.js
+    </script>
+
+  
+</body>
+
+</html>
