@@ -1,362 +1,143 @@
-
 <!DOCTYPE html>
-<html lang="en" >
-
-<head>
-  <meta charset="UTF-8">
-  
-
-    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-
-    <meta name="apple-mobile-web-app-title" content="CodePen">
-
-
-
-
-  
-  <title>Happy Birthday gayatri</title>
-    <link rel="canonical" href="https://codepen.io/jh3y/pen/YzjEGMm" />
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-
-  
-  
+<html>
+<title>Happy Birthday Gayatri</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-@import url("https://unpkg.com/open-props/open-props.min.css");
-@import url("https://unpkg.com/open-props/normalize.min.css");
-
-*,
-*:after,
-*:before {
-	box-sizing: border-box;
-}
-
-body {
-	display: grid;
-	place-items: center;
-	min-height: 100vh;
-	font-family:  'Google Sans', sans-serif, system-ui;
-  width: 100vw;
-  overflow-x: hidden;
-}
-
-@media only screen and (max-width: 600px) {
-      body {
-        transform: scale(0.8);
-        transform-origin: top left;
-      }
-}
-
-ul {
-	--width: 100vw;
-	width: var(--width);
-	height: 100vh;
-	padding: 0;
-	margin: 0;
-	list-style-type: none;
-	display: grid;
-	place-items: center;
-	grid-auto-flow: column;
-	gap: 1rem;
-	overflow: auto;
-	-ms-scroll-snap-type: x mandatory;
-	    scroll-snap-type: x mandatory;
-	padding: 0 calc((var(--width, 80vw) * 0.5) - (var(--card-size, 300px) * 0.5));
-	scroll-timeline: --rad;
-	scroll-timeline-axis: inline;
-}
-
-li {
-	view-timeline: --item inline;
-	scroll-snap-align: center;
-}
-
-article {
-	width: var(--card-size, 300px);
-	aspect-ratio: 3 / 4;
-	border-radius: var(--radius-3);
-	background: var(--surface-4);
-	position: relative;
-	overflow: hidden;
-	scale: 0.8;
-	animation-timeline: --item;
-	-webkit-animation: scalify both ease-in-out;
-	        animation: scalify both ease-in-out;
-	-webkit-animation-delay: cover 40%;
-	        animation-delay: cover 40%;
-	animation-end-delay: cover 60%;
-}
-
-@-webkit-keyframes scalify {
-	50% {
-		scale: 1;
-		background-position: 100% 100%;
-	}
-}
-
-@keyframes scalify {
-	50% {
-		scale: 1;
-		background-position: 100% 100%;
-	}
-}
-
-.backdrop {
-	position: absolute;
-	inset: 0;
-	filter: grayscale(1);
-	background-image: var(--bg);
-	background-size: 200% 200%;
-	background-position: 0% 50%;
-	animation-timeline: --item;
-	-webkit-animation: colorify both ease-in-out, shift-bg both linear;
-	        animation: colorify both ease-in-out, shift-bg both linear;
-	-webkit-animation-delay: cover 40%, contain 0%;
-	        animation-delay: cover 40%, contain 0%;
-	animation-end-delay: cover 60%, contain 100%;
-}
-
-
-@-webkit-keyframes colorify {
-	50% {
-		filter: grayscale(0);
-	}
-}
-
-
-@keyframes colorify {
-	50% {
-		filter: grayscale(0);
-	}
-}
-
-@-webkit-keyframes shift-bg {
-	0% {
-		background-position: 0% 50%;
-	}
-	100% {
-		background-position: 100% 50%;
-	}
-}
-
-@keyframes shift-bg {
-	0% {
-		background-position: 0% 50%;
-	}
-	100% {
-		background-position: 100% 50%;
-	}
-}
-
-.word {
-	-webkit-clip-path: inset(0 0 0 0);
-	        clip-path: inset(0 0 0 0);
-}
-
-span > span {
-	display: inline-block;
-	translate: 0 100%;
-	animation-timeline: --item;
-	-webkit-animation: move-on-up both ease-in-out;
-	        animation: move-on-up both ease-in-out;
-	-webkit-animation-delay: cover 40%;
-	        animation-delay: cover 40%;
-	animation-end-delay: cover 60%;
-}
-
-@-webkit-keyframes move-on-up {
-	0% {
-		translate: 0 100%;
-	}
-	50% {
-		translate: 0 0;
-	}
-	100% {
-		translate: 0 -100%;
-	}
-}
-
-@keyframes move-on-up {
-	0% {
-		translate: 0 100%;
-	}
-	50% {
-		translate: 0 0;
-	}
-	100% {
-		translate: 0 -100%;
-	}
-}
-
-/* char:nth-of-type(1) {
-	animation-timeline: --item;
-	animation: move-up both, move-out both;
-	animation-delay: cover calc(50% - 300px), cover 50%;
-	animation-end-delay: cover 50%, cover 70%;
-}
-.char:nth-of-type(2) {
-	animation-timeline: --item;
-	animation: move-up both, move-out both;
-	animation-delay: cover 31%, cover 51%;
-	animation-end-delay: cover 50%, cover 71%;
-}
-.char:nth-of-type(3) {
-	animation-timeline: --item;
-	animation: move-up both, move-out both;
-	animation-delay: cover 32%, cover 52%;
-	animation-end-delay: cover 50%, cover 72%;
-}
-.char:nth-of-type(4) {
-	animation-timeline: --item;
-	animation: move-up both, move-out both;
-	animation-delay: cover 33%, cover 53%;
-	animation-end-delay: cover 50%, cover 73%;
-}
-.char:nth-of-type(5) {
-	animation-timeline: --item;
-	animation: move-up both, move-out both;
-	animation-delay: cover 34%, cover 54%;
-	animation-end-delay: cover 50%, cover 74%;
-}
-.char:nth-of-type(6) {
-	animation-timeline: --item;
-	animation: move-up both, move-out both;
-	animation-delay: cover 35%, cover 55%;
-	animation-end-delay: cover 50%, cover 75%;
-}
-.char:nth-of-type(7) {
-	animation-timeline: --item;
-	animation: move-up both, move-out both;
-	animation-delay: cover 36%, cover 56%;
-	animation-end-delay: cover 50%, cover 76%;
-} */
-
-/* @keyframes move-up {
-	to {
-		translate: 0 0;
-	}
-}
-@keyframes move-out {
-	to {
-		translate: 0 -100%;
-	}
-} */
-
-
-
-a > span {
-	background: hsl(0 0% 0% / 0.4);
-	position: absolute;
-	inset: 0;
-	display: grid;
-	place-items: center;
-}
-
-span {
-	font-size: 2.5rem;
-	font-weight: 300;
-	letter-spacing: 0.5rem;
-	text-transform: uppercase;
-	color: var(--gray-0);
-}
-
-.sr-only {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	white-space: nowrap;
-	border-width: 0;
-}
-h1{
-  text-align:center;
-}
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 </style>
+<body class="w3-light-grey w3-content" style="max-width:1600px">
 
-  <script>
-  window.console = window.console || function(t) {};
+<!-- Sidebar/menu -->
+<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:300px;" id="mySidebar"><br>
+  <div class="w3-container">
+    <a href="#" onclick="w3_close()" class="w3-hide-large w3-right w3-small w3-padding w3-hover-grey" title="close menu">
+      <i class="fa fa-remove"></i>
+    </a>
+    <img src="gayatri.png" style="width:100%;" class="w3-round"><br><br>
+    <h4><b>Happy Birthday</b></h4>
+    
+  </div>
+  <div class="w3-bar-block">
+    <a href="index.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><i class="fa fa-th-large fa-fw w3-margin-right"></i>Home</a> 
+    <a href="sample-1.html" onclick="w3_close()" class="w3-bar-item w3-button w3-padding w3-text-teal"><i class="fa fa-user fa-fw w3-margin-right"></i>Card</a> 
+  </div>
+</nav>
+
+<!-- Overlay effect when opening sidebar on small screens -->
+<div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+<!-- !PAGE CONTENT! -->
+<div class="w3-main" style="margin-left:300px">
+
+  <!-- Header -->
+  <header id="portfolio">
+    <a href="#"><img src="falls.jpg" alt="beach"style="width:65px;" class="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity"></a>
+    <span class="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onclick="w3_open()"><i class="fa fa-bars"></i></span>
+    <div class="w3-container">
+    <h1><b>🎂 Happy Birthday G-A-TRI 🎂</b></h1>
+    <div class="w3-section w3-bottombar w3-padding-16">
+      
+      <a href="#" style="text-decoration:none"><button class="w3-button w3-black ">Somethings which I know that you like the most</button></a>
+      
+    </div>
+    </div>
+  </header>
+  
+  <!-- First Photo Grid-->
+  <div class="w3-row-padding">
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="mumbai.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Mumbai</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="hockey.webp" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Hockey</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="ncc.jpeg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>NCC</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="tea.webp" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Tea😉</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="beach.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Beach</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="gola.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Gola</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="mango.webp" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Mango</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <a href="https://drive.google.com/drive/folders/1upf9JFkhTjy-D-Xe-JFicedc5La_y7jy?usp=share_link"><img src="ep76.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Ep-76🥺</b></p></a>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="anime.png" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Anime</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="maldives.jpeg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Maldives</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="rishikesh.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Rishikesh</b></p>
+        </div>
+    </div>
+    <div class="w3-third w3-container w3-margin-bottom">
+      <img src="panipuri.jpg" alt="Norway" style="width:100%" class="w3-hover-opacity">
+      <div class="w3-container w3-white">
+        <p><b>Pani Puri</b></p>
+        </div>
+    </div>
+
+    
+  </div> 
+</div>
+
+<script>
+// Script to open and close sidebar
+function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+}
+ 
+function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+}
 </script>
 
-  
-  
-</head>
-
-<body translate="no">
-  <main>
-      <ul>
-	  <li>
-          <article style="--bg: url(mumbai.jpg);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>Mumbai</span></span></span></a>
-          </article>
-        </li>
-	  <li>
-          <article style="--bg: url(hockey.webp);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>Hockey</span></span></span></a>
-          </article>
-        </li>
-	  <li>
-          <article style="--bg: url(ncc.jpeg);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>NCC</span></span></span></a>
-          </article>
-        </li>
-	  <li>
-          <article style="--bg: url(tea.webp);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>Tea😉</span></span></span></a>
-          </article>
-        </li>
-	  <li>
-          <article style="--bg: url(beach.jpg);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>Beach</span></span></span></a>
-          </article>
-        </li>
-	  <li>
-          <article style="--bg: url(gola.jpg);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>Gola</span></span></span></a>
-          </article>
-        </li>
-	  <li>
-          <article style="--bg: url(mango.webp);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>Mango</span></span></span></a>
-          </article>
-        </li>
-        <li>
-          <article style="--bg: url(ep76.jpg);">
-            <a href="https://drive.google.com/drive/folders/1upf9JFkhTjy-D-Xe-JFicedc5La_y7jy?usp=share_link">
-              <div class="backdrop"></div>
-              <span><span class="word"><span>Episode76 :))</span></span></span>
-            </a>
-          </article>
-        </li>
-        <li>
-          <article style="--bg: url(anime.png);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>Anime</span></span></span></a>
-          </article>
-        </li>
-        <li>
-          <article style="--bg: url(maldives.jpeg);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>Maldives</span></span></span></a>
-          </article>
-        </li>
-        
-        <li>
-          <article style="--bg: url(rishikesh.jpg);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>Rishikesh</span></span></span></a>
-          </article>
-        </li>
-        <li>
-          <article style="--bg: url(panipuri.jpg);">
-            <a href="#"><div class="backdrop"></div><span><span class="word"><span>PaniPuri</span></span></span></a>
-          </article>
-        </li>
-      </ul>
-    </main>
-  
-  <script src='https://flackr.github.io/scroll-timeline/dist/scroll-timeline.js'></script>
-  
-  
 </body>
-
 </html>
